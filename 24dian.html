@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>24点</title>
+		<!-- 引入vue.js -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<!-- 引入组件库 -->
+		<script src="https://lib.baomitu.com/element-ui/2.13.2/index.js"></script>
+	</head>
+	<body>
+		<div id="app">
+		    <el-container>
+				<el-header>
+					<h1>24点</h1> 
+				</el-header>
+				<el-main>
+					<div class="main">
+						<!-- 计算公式 -->
+						<el-card shadow="always">
+						      {{ result }}
+						</el-card>
+						<!-- 随机数字 -->
+						<el-row :gutter="20">
+						  <el-col :span="12" v-for="num,index in randomNum">
+						    <el-card shadow="always" @click.native="getVal(num)">
+						      {{ num }}
+						    </el-card>
+						  </el-col>
+						  <!-- <el-col :span="12">
+						    <el-card shadow="hover">
+						      3
+						    </el-card>
+						  </el-col>
+						</el-row>
+						<el-row :gutter="20">
+						  <el-col :span="12">
+						    <el-card shadow="always">
+						      8
+						    </el-card>
+						  </el-col>
+						  <el-col :span="12">
+						    <el-card shadow="hover">
+						      9
+						    </el-card>
+						  </el-col> -->
+						</el-row>
+						<!-- 运算符选择 -->
+						<el-row >
+						  <el-col :span="4"><el-button type="primary" plain icon="el-icon-plus" @click="add">加</el-button></el-col>
+						  <el-col :span="4"><el-button type="primary" plain icon="el-icon-minus" @click='inc'>减</el-button></el-col>
+						  <el-col :span="4"><el-button type="primary" plain icon="el-icon-close" @click='mul'>乘</el-button></el-col>
+						  <el-col :span="4"><el-button type="primary" plain icon="" @click='div'>/&nbsp;&nbsp;除</el-button></el-col>
+						  <el-col :span="4"><el-button type="primary" plain icon="el-icon-arrow-left" @click='left'>括</el-button></el-col>
+						  <el-col :span="4"><el-button type="primary" plain icon="el-icon-arrow-right" @click='right'>号</el-button></el-col>
+						</el-row>
+						<el-row :gutter="20" class="footBtn">
+							<el-col :span="4"><el-button type="primary" plain icon="el-icon-refresh-right" @click='clean'>清除</el-button></el-col>
+							<el-col :span="4"><el-button type="primary" plain icon="el-icon-success" @click='confirm'>确定</el-button></el-col>
+							<el-col :span="4"><el-button type="primary" plain icon="el-icon-refresh" @click='resert'>换题</el-button></el-col>
+						</el-row>
+					</div>
+					
+				</el-main>
+		    </el-container>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = new Vue({
+			el:'#app', //选择器
+			data:{
+				msg:'hello',
+				randomNum:[],
+				result:'',
+				tempResult:'',
+			},
+			mounted() {
+				this.getRandomNum();
+			},
+			methods:{
+				getRandomNum() {
+					this.randomNum = [];
+					for (var i = 0; i < 4; i++) {
+						this.randomNum.push(Math.floor(Math.random(10)*10));
+					}
+				},
+				getVal(num) {
+					let selNum = num;
+					this.result += num;
+				},
+				add() {
+					this.result += '+';
+				},
+				inc() {
+					this.result += '-';
+				},
+				mul() {
+					this.result += '*';
+				},
+				div() {
+					this.result += '/';
+				},
+				left() {
+					this.result += '(';
+				},
+				right() {
+					this.result += ')';
+				},
+				clean() {
+					this.result = '';
+				},
+				confirm() {
+					try{
+						this.tempResult = eval(this.result);
+					}
+					catch(err) {
+						this.$message.error('输入有误');
+						this.result = '';
+					}
+					console.log('-confirm--');
+					if (this.tempResult === 24) {
+						this.$message({
+						  showClose: true,
+						  message: '正确',
+						  type: 'success'
+						});
+						this.result = '';
+						this.getRandomNum();
+					} else{
+						this.$message.error('错误');
+						this.result = '';
+					}
+					console.log('---');
+				},
+				resert() {
+					this.getRandomNum();
+				}
+			},
+			
+		}); 
+		
+	</script>
+	
+	<style type="text/css">
+		#app {
+			text-align: center;
+		}
+		.main {
+			width: 40%;
+			margin-left: 30%;
+		}
+		.el-row {
+			margin-top: 2.5rem;
+		}
+		.el-card__body{
+			height: 3.75rem;
+			font-size: xx-large;
+			line-height: 3.75rem;
+		}
+		.footBtn{
+			margin-left: 0 !important;
+		}
+		/* .el-card{
+			margin-top: 2.5rem;
+		} */
+		
+	</style>
+</html>
